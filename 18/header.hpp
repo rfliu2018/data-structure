@@ -32,4 +32,14 @@ public:
 	{
 		return  arr[i];
 	}
+
+public:
+	void print()
+	{
+		for (unsigned i = 0; i < length; i++)
+		{
+			std::cout << arr[i] << "  ";
+		}
+		std::cout << std::endl;
+	}
 };
