@@ -5,7 +5,7 @@
 class SqList
 {
 public:
-	double length = 0;
+	unsigned length = 0;
 	double *arr;
 
 public:
@@ -22,6 +22,10 @@ public:
 	SqList(unsigned len): length(len), arr(new double[len])
 	{
 
+	}
+	~SqList()
+	{
+		delete []arr;
 	}
 
 	double& operator[](unsigned i)//假如这里不是double&, 那么就不可以赋值
