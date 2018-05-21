@@ -22,12 +22,16 @@ int main(void)
     bt.init(10);
     /* printValue(bt.root); */
 
-    std::cout << "先序遍历:" << std::endl;  //注释1
+    std::cout << "先序遍历:" << std::endl;
     bt.preOrder();
-    std::cout << std::endl;  //注释2
+    std::cout << std::endl;
 
     std::cout << "中序遍历:" << std::endl;
     bt.inOrder();
+    std::cout << std::endl;
+
+    std::cout << "后序遍历:" << std::endl;
+    bt.postOrder();
     std::cout << std::endl;
     return 0;
 }

@@ -13,59 +13,93 @@ void visitNode(BinaryTreeNode<T>* pn)
  * 先序遍历的递归实现
  */
 template <typename T>
-void _preOrder1(BinaryTreeNode<T>* pn)
+void _preOrderRecur(BinaryTreeNode<T>* pn)
 {
     if (pn == nullptr) {
         return;
     }
 
     visitNode(pn);
-    _preOrder1(pn->left);
-    _preOrder1(pn->right);
+    _preOrderRecur(pn->left);
+    _preOrderRecur(pn->right);
 }
 
 /**
  * 先序遍历的非递归实现
  */
 template <typename T>
-void _preOrder2(BinaryTreeNode<T>* pn)
+void _preOrderNonRecur(BinaryTreeNode<T>* pn)
 {
-    std::stack<BinaryTreeNode<T>*> s;
+    std::stack<BinaryTreeNode<T>*> stack;
 
     BinaryTreeNode<T>* p = pn;
-    while (p != nullptr || !s.empty()) {
+    while (p != nullptr || !stack.empty()) {
         while (p != nullptr) {
             visitNode(p);
-            s.push(p);
+            stack.push(p);
             p = p->left;
         }
 
-        p = s.top();
-        s.pop();
+        p = stack.top();
+        stack.pop();
         p = p->right;
     }
+
+    std::cout << std::endl;
+}
+
+/**
+ * 后序遍历的非递归实现
+ */
+template <typename T>
+void _postOrderNonRecur(BinaryTreeNode<T>* root)
+{
+    BinaryTreeNode<T>* lastVisited = nullptr;
+    BinaryTreeNode<T>* p = root;
+
+    std::stack<BinaryTreeNode<T>*> stack;
+    while (!stack.empty() || p != nullptr) {
+        while (p != nullptr) {  //一直把左链放进堆栈
+            stack.push(p);
+            p = p->left;
+        }
+
+        BinaryTreeNode<T>* peekNode = stack.top();
+        if (peekNode->right != nullptr &&
+            peekNode->right != lastVisited) {  //可以右移
+            p = peekNode->right;  //原本p指向因为不停左移的null
+        } else {                  //回退
+            visitNode(peekNode);
+            lastVisited = peekNode;
+            stack.pop();
+        }
+    }
+
+    std::cout << std::endl;
 }
 
 /**
  * 中序遍历的非递归实现
  */
 template <typename T>
-void _inOrder(BinaryTreeNode<T>* root)
+void _inOrderNonRecur(BinaryTreeNode<T>* root)
 {
-    std::stack<T> s;
+    std::stack<BinaryTreeNode<T>*> stack;
 
     BinaryTreeNode<T>* p = root;
-    while (p != nullptr || !s.empty()) {
+    while (p != nullptr || !stack.empty()) {
         while (p != nullptr) {
-            s.push(p);
+            stack.push(p);
             p = p->left;
         }
 
-        p = s.top();
-        s.pop();
+        p = stack.top();
+        stack.pop();
         visitNode(p);
         p = p->right;
     }
+
+    std::cout << std::endl;
 }
 
 template <typename T>
@@ -75,15 +109,11 @@ class BinaryTree
     BinaryTreeNode<T>* root;
 
   public:
-    BinaryTree(T value);
+    BinaryTree(T value) { root->value = value; }
     BinaryTree() {}
-    void preOrder()
-    {
-        _preOrder2(root);
-        std::cout << std::endl;
-    }
-
-    void inOrder() { _inOrder(root); }
+    void preOrder() { _preOrderNonRecur(root); }
+    void inOrder() { _inOrderNonRecur(root); }
+    void postOrder() { _postOrderNonRecur(root); }
     void init(T i)
     {
         root = new BinaryTreeNode<T>(i);
@@ -109,11 +139,5 @@ class BinaryTree
   private:
     /* data */
 };
-
-template <typename T>
-BinaryTree<T>::BinaryTree(T value)
-{
-    root = new BinaryTreeNode<T>(value);
-}
 
 #endif /* ifndef BINARY */
