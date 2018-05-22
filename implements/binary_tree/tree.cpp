@@ -33,5 +33,9 @@ int main(void)
     std::cout << "后序遍历:" << std::endl;
     bt.postOrder();
     std::cout << std::endl;
+
+    std::cout << "层序遍历:" << std::endl;
+    bt.bfsOrder();
+    std::cout << std::endl;
     return 0;
 }

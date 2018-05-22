@@ -1,5 +1,6 @@
 #ifndef BINARYTREE
 #define BINARYTREE
+#include <queue>
 #include <stack>
 #include "./BinaryTreeNode.hpp"
 
@@ -102,6 +103,31 @@ void _inOrderNonRecur(BinaryTreeNode<T>* root)
     std::cout << std::endl;
 }
 
+/**
+ * 层序遍历
+ */
+template <typename T>
+void _bfsOrder(BinaryTreeNode<T>* root)
+{
+    std::queue<BinaryTreeNode<T>*> que;
+    BinaryTreeNode<T>* p = root;
+    que.push(p);
+    while (!que.empty()) {
+        BinaryTreeNode<T>* q = que.front();
+        que.pop();
+        visitNode(q);
+
+        if (q->left != nullptr) {
+            que.push(q->left);
+        }
+        if (q->right != nullptr) {
+            que.push(q->right);
+        }
+    }
+
+    std::cout << std::endl;
+}
+
 template <typename T>
 class BinaryTree
 {
@@ -114,6 +140,7 @@ class BinaryTree
     void preOrder() { _preOrderNonRecur(root); }
     void inOrder() { _inOrderNonRecur(root); }
     void postOrder() { _postOrderNonRecur(root); }
+    void bfsOrder() { _bfsOrder(root); }
     void init(T i)
     {
         root = new BinaryTreeNode<T>(i);
